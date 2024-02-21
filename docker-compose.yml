@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: url_shortener_postgres
+    environment:
+      POSTGRES_DB: urlshortener
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./containers/postgres/data:/var/lib/postgresql/data
+      - ./containers/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
