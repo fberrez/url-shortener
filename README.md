@@ -5,6 +5,8 @@ https://codeculturepro.medium.com/implementing-google-login-in-a-node-js-applica
 
 https://github.com/wpcodevo/google-github-oauth2-rust/blob/master/src/handler.rs
 
+https://github.com/randommm/rust-axum-with-google-oauth/blob/master/src/routes/oauth.rs
+
 
 ## Docker 
 

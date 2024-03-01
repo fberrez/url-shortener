@@ -1,22 +1,18 @@
-CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE,
-    email VARCHAR(100) UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    google_id VARCHAR(50),
-    google_access_token VARCHAR(100),
-    google_refresh_token VARCHAR(100),
-    google_expires_in TIMESTAMP,
-    github_id VARCHAR(50),
-    github_access_token VARCHAR(100),
-    github_refresh_token VARCHAR(100),
-    github_expires_in TIMESTAMP,
-    apple_id VARCHAR(50),
-    apple_identity_token VARCHAR(100),
-    apple_access_token VARCHAR(100),
-    apple_refresh_token VARCHAR(100),
-    apple_expires_in TIMESTAMP
+CREATE TABLE "users" (
+    "id" serial NOT NULL PRIMARY KEY,
+    "email" text NOT NULL UNIQUE
 );
-
-CREATE INDEX idx_username ON users(username);
-CREATE INDEX idx_email ON users(email);
+CREATE TABLE "user_sessions" (
+    "id" serial NOT NULL PRIMARY KEY,
+    "user_id" integer NOT NULL,
+    "session_token_p1" text NOT NULL,
+    "session_token_p2" text NOT NULL,
+    "created_at" integer NOT NULL,
+    "expires_at" integer NOT NULL
+);
+CREATE TABLE "oauth2_state_storage" (
+    "id" serial NOT NULL PRIMARY KEY,
+    "csrf_state" text NOT NULL,
+    "pkce_code_verifier" text NOT NULL,
+    "return_url" text NOT NULL
+);

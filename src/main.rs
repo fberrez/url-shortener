@@ -12,17 +12,27 @@ async fn main() {
     let cors = CorsLayer::new()
         .allow_origin("http://localhost:3000".parse::<HeaderValue>().unwrap())
         .allow_methods([Method::GET, Method::POST, Method::DELETE]);
-
-    let pool = PgPoolOptions::new()
+    let pool = match PgPoolOptions::new()
         .max_connections(10) // Adjust as needed
         .connect(&config.postgres_uri)
         .await
-        .unwrap();
+    {
+        Ok(pool) => pool,
+        Err(e) => panic!("Failed to connect to Postgres: {}", e),
+    };
 
     let app = create_router(AppState { pool, config }).layer(cors);
 
     let addr = "0.0.0.0:3000";
+
+    let listener = match tokio::net::TcpListener::bind(addr).await {
+        Ok(listener) => listener,
+        Err(e) => panic!("Failed to bind to address: {}", e),
+    };
+
     println!("🚀 Listening on http://{}", addr);
-    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    match axum::serve(listener, app).await {
+        Ok(_) => {}
+        Err(e) => panic!("Failed to start server: {}", e),
+    }
 }
